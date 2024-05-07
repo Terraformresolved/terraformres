@@ -29,18 +29,6 @@ resource "google_bigquery_table" "unified_values" {
   }
 }
 
-resource "google_bigquery_table" "daily_adjusted_totals" {
-  dataset_id = google_bigquery_dataset.views.dataset_id
-  table_id   = "daily_adjusted_totals"
-  view {
-    query = templatefile("${path.module}/sql/daily_adjusted_totals.sql", {
-      values = "${var.config.project}.${google_bigquery_table.unified_values.dataset_id}.${google_bigquery_table.unified_values.table_id}",
-      control_prefix = "${var.config.project}.${google_bigquery_table.control_range_view[0].dataset_id}.control_value_range_",
-      control_fields = ["multiplier"]
-    })
-    use_legacy_sql = false
-  }
-}
 
 resource "google_bigquery_table" "current_totals_latest" {
   dataset_id = google_bigquery_dataset.views.dataset_id
