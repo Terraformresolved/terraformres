@@ -54,16 +54,3 @@ resource "google_bigquery_table" "current_totals_latest" {
     use_legacy_sql = false
   }
 }
-
-resource "google_bigquery_table" "historical_totals_latest" {
-  dataset_id = google_bigquery_dataset.views.dataset_id
-  table_id   = "historical_totals"
-  view {
-    query = templatefile("${path.module}/sql/last_n_days_totals.sql", {
-      n_days = "${var.config.retention_days}"
-      PREFIX = "historic_totals/"
-      daily_totals = "${var.config.project}.${google_bigquery_table.daily_adjusted_totals.dataset_id}.${google_bigquery_table.daily_adjusted_totals.table_id}"
-    })
-    use_legacy_sql = false
-  }
-}
