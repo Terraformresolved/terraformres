@@ -3,27 +3,6 @@
 # See also: https://github.com/carrot/terraform-api-gateway-cors-module/
 
 # This aws_lambda_function is used when invoked with a local zipfile
-resource "aws_lambda_function" "local_zipfile" {
-  count = "${var.function_s3_bucket == "" ? 1 : 0}"
-
-  # These are SPECIFIC to the deployment method:
-  filename         = "${var.function_zipfile}"
-  source_code_hash = "${var.function_s3_bucket == "" ? "${base64sha256(file("${var.function_zipfile}"))}" : ""}"
-
-  # These are the SAME for both:
-  description   = "${var.comment_prefix}${var.api_domain}"
-  function_name = "${local.prefix_with_domain}"
-  handler       = "${var.function_handler}"
-  runtime       = "${var.function_runtime}"
-  timeout       = "${var.function_timeout}"
-  memory_size   = "${var.memory_size}"
-  role          = "${aws_iam_role.this.arn}"
-  tags          = "${var.tags}"
-
-  environment {
-    variables = "${var.function_env_vars}"
-  }
-}
 
 # This aws_lambda_function is used when invoked with a zipfile in S3
 resource "aws_lambda_function" "s3_zipfile" {
