@@ -73,24 +73,6 @@ resource "aws_iam_role" "task_role" {
 EOF
 }
 
-resource "aws_iam_policy" "task_policy" {
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "elasticfilesystem:ClientMount",
-        "elasticfilesystem:ClientWrite"
-      ],
-      "Resource": "*"
-    }
-  ]
-  }
-EOF
-}
-
 resource "aws_iam_role_policy_attachment" "task_policy_attach" {
   role       = aws_iam_role.task_role.name
   policy_arn = aws_iam_policy.task_policy.arn
