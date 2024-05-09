@@ -50,24 +50,6 @@ resource "aws_lambda_function" "viewer_request" {
   tags             = "${var.tags}"
 }
 
-resource "aws_lambda_function" "viewer_response" {
-  provider = "aws.us_east_1" # because: error creating CloudFront Distribution: InvalidLambdaFunctionAssociation: The function must be in region 'us-east-1'
-
-  # lambda_zip.output_path will be absolute, i.e. different on different machines.
-  # This can cause Terraform to notice differences that aren't actually there, so let's convert it to a relative one.
-  # https://github.com/hashicorp/terraform/issues/7613#issuecomment-332238441
-  filename = "${substr(data.archive_file.lambda_zip.output_path, length(path.cwd) + 1, -1)}"
-
-  source_code_hash = "${data.archive_file.lambda_zip.output_base64sha256}"
-  function_name    = "${local.prefix_with_domain}---viewer_response"
-  role             = "${aws_iam_role.this.arn}"
-  description      = "${var.comment_prefix}${var.site_domain} (response handler)"
-  handler          = "lambda.viewer_response"
-  runtime          = "nodejs8.10"
-  publish          = true                                                         # because: error creating CloudFront Distribution: InvalidLambdaFunctionAssociation: The function ARN must reference a specific function version. (The ARN must end with the version number.)
-  tags             = "${var.tags}"
-}
-
 # Allow Lambda@Edge to invoke our functions
 resource "aws_iam_role" "this" {
   name = "${local.prefix_with_domain}"
