@@ -36,7 +36,7 @@ exports.test = async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500)
-            .send({
+
                 "version": version,
                 "error": err.message,
                 "stack": err.stack
