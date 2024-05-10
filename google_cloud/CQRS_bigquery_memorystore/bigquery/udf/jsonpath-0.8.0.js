@@ -58,7 +58,7 @@ function jsonPath(obj, expr, arg) {
                   f(i, loc, expr, val, path);
          }
          else if (typeof val === "object") {
-            for (var m in val)
+
                if (val.hasOwnProperty(m))
                   f(m, loc, expr, val, path);
          }
