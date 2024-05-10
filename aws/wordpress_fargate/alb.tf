@@ -35,29 +35,3 @@ resource "aws_security_group" "alb" {
   tags = var.tags
 }
 
-
-module "alb" {
-  source             = "terraform-aws-modules/alb/aws"
-  version            = "~> 5.0"
-  name               = "${var.prefix}-${var.environment}"
-  load_balancer_type = "application"
-  vpc_id             = module.vpc.vpc_id
-  subnets            = module.vpc.public_subnets
-  security_groups    = [aws_security_group.alb.id]
-
-  https_listeners = [
-    {
-      "certificate_arn" = module.acm_alb.this_acm_certificate_arn
-      "port"            = 443
-    },
-  ]
-
-  target_groups = [
-    {
-      name             = "${var.prefix}-default-${var.environment}"
-      backend_protocol = "HTTP"
-      backend_port     = 80
-    }
-  ]
-  tags = var.tags
-}
