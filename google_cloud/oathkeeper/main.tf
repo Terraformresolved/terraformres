@@ -43,11 +43,7 @@ resource "google_cloud_run_service_iam_policy" "noauth" {
 }
 
 # config bucket for service
-resource "google_storage_bucket" "config" {
-  name               = "${local.project}_${local.region}_oathkeeper"
-  location           = local.location
-  bucket_policy_only = true
-}
+
 
 # rules for service
 resource "google_storage_bucket_object" "rules" {
