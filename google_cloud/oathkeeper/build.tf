@@ -1,10 +1,5 @@
 # Mirror base image from Dockerhub image into Google Container Registry
-module "docker-mirror" {
-  source      = "github.com/neomantra/terraform-docker-mirror"
-  image_name  = local.base_image_name
-  image_tag   = local.base_image_tag
-  dest_prefix = "eu.gcr.io/${local.project}"
-}
+
 
 # Hydrate docker template file into .build directory
 resource "local_file" "dockerfile" {
