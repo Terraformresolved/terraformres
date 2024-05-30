@@ -5,27 +5,7 @@
 # This aws_lambda_function is used when invoked with a local zipfile
 
 # This aws_lambda_function is used when invoked with a zipfile in S3
-resource "aws_lambda_function" "s3_zipfile" {
-  count = "${var.function_s3_bucket == "" ? 0 : 1}"
 
-  # These are SPECIFIC to the deployment method:
-  s3_bucket = "${var.function_s3_bucket}"
-  s3_key    = "${var.function_zipfile}"
-
-  # These are the SAME for both:
-  description   = "${var.comment_prefix}${var.api_domain}"
-  function_name = "${local.prefix_with_domain}"
-  handler       = "${var.function_handler}"
-  runtime       = "${var.function_runtime}"
-  timeout       = "${var.function_timeout}"
-  memory_size   = "${var.memory_size}"
-  role          = "${aws_iam_role.this.arn}"
-  tags          = "${var.tags}"
-
-  environment {
-    variables = "${var.function_env_vars}"
-  }
-}
 
 # Terraform isn't particularly helpful when you want to depend on the existence of a resource which may have count 0 or 1, like our functions.
 # This is a hacky way of referring to the properties of the function, regardless of which one got created.
