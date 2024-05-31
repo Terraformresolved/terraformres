@@ -1,16 +1,6 @@
 
 
-module "acm" {
-  source      = "terraform-aws-modules/acm/aws"
-  version     = "~> v2.0"
-  domain_name = var.site_domain
-  zone_id     = data.aws_route53_zone.this.zone_id
-  tags        = var.tags
 
-  providers = {
-    aws = aws.us_east_1 # cloudfront needs acm certificate to be from "us-east-1" region
-  }
-}
 
 resource "aws_cloudfront_distribution" "this" {
   origin {
